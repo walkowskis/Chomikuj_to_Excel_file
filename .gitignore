@@ -344,3 +344,4 @@ healthchecksdb
 # Own
 *.config
 *.csproj
+Properties/
