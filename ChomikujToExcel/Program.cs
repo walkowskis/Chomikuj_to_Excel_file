@@ -17,6 +17,7 @@ namespace ChomikujToExcel
     {
         static void Main(string[] args)
         {
+            Menu.StartMenu();
             Start test = new Start();
             test.SetUp();
             test.LoginToOwnAccount();
@@ -40,9 +41,9 @@ namespace ChomikujToExcel
             Task.Delay(2000).Wait();
             home.RodoPopUpClose();
             Task.Delay(2000).Wait();
-            home.LoginOnPage(Json_Data.PersonalData("login"), Json_Data.PersonalData("password"));
+            home.LoginOnPage(Json_Data.WriteData("login"), Json_Data.WriteData("password"));
             Task.Delay(2000).Wait();
-            home.EnterUserPassword(Json_Data.PersonalData("userPassword"));
+            home.EnterUserPassword(Json_Data.WriteData("userPassword"));
             Task.Delay(2000).Wait();
             home.BookList();
             driver.Quit();

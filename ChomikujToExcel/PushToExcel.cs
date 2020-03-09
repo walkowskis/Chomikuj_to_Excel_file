@@ -32,7 +32,7 @@ namespace ChomikujToExcel
             };
 
             //Get an active workbook.
-            Excel_Workbook = (Microsoft.Office.Interop.Excel._Workbook)(Excel.Workbooks.Open(Json_Data.PersonalData("filePath")));
+            Excel_Workbook = (Microsoft.Office.Interop.Excel._Workbook)(Excel.Workbooks.Open(Json_Data.WriteData("filePath")));
             Excel_Sheet = (Microsoft.Office.Interop.Excel._Worksheet)Excel_Workbook.ActiveSheet;
             Excel_Sheet.AutoFilter.ShowAllData();
 

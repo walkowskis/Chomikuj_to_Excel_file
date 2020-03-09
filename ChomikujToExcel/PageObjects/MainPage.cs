@@ -70,7 +70,7 @@ namespace ChomikujToExcel.PageObjects
 
         public void goToPage()
         {
-            driver.Navigate().GoToUrl(Json_Data.PersonalData("url"));
+            driver.Navigate().GoToUrl(Json_Data.WriteData("url"));
         }
 
         public List<string> BookList()
