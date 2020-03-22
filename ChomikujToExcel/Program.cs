@@ -18,9 +18,6 @@ namespace ChomikujToExcel
         static void Main(string[] args)
         {
             Menu.StartMenu();
-            Start test = new Start();
-            test.SetUp();
-            test.LoginToOwnAccount();
         }
     }
 
@@ -30,7 +27,12 @@ namespace ChomikujToExcel
 
         public void SetUp()
         {
-            driver = new ChromeDriver();
+            ChromeOptions option = new ChromeOptions();            
+            option.AddArgument("--silent");
+            option.AddArgument("--log-level=3");
+            ChromeDriverService service = ChromeDriverService.CreateDefaultService();
+            service.SuppressInitialDiagnosticInformation = true;
+            driver = new ChromeDriver(service, option);
             driver.Manage().Window.Maximize();
         }
 

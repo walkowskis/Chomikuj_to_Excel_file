@@ -22,10 +22,13 @@ namespace ChomikujToExcel.Utils
     {
         public static string WriteData(string data)
         {
-            //Console.WriteLine("Taki path: --{0}--", CommonHelpers.config_path);
             JObject jsonObject = JObject.Parse(File.ReadAllText(CommonHelpers.config_path));
-            //Console.WriteLine(jsonObject.ToString());
             return jsonObject[data].ToString();
+        }
+        public static string WriteAllData()
+        {
+            JObject jsonObject = JObject.Parse(File.ReadAllText(CommonHelpers.config_path));
+            return jsonObject.ToString();
         }
 
         public static void ModifyData(string key, string value)
