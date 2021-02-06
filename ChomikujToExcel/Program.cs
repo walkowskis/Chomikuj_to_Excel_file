@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ChomikujToExcel.PageObjects;
+using ChomikujToExcel.Utils;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using ChomikujToExcel.PageObjects;
-using ChomikujToExcel.Utils;
-using SeleniumExtras.PageObjects;
-using OpenQA.Selenium.Support.UI;
-
+using System;
+using System.Threading.Tasks;
 
 namespace ChomikujToExcel
 {
@@ -17,9 +11,7 @@ namespace ChomikujToExcel
     {
         static void Main(string[] args)
         {
-            Start test = new Start();
-            test.SetUp();
-            test.LoginToOwnAccount();
+            Menu.StartMenu();
         }
     }
 
@@ -29,7 +21,25 @@ namespace ChomikujToExcel
 
         public void SetUp()
         {
-            driver = new ChromeDriver();
+            ChromeOptions option = new ChromeOptions();
+            option.AddArgument("--silent");
+            option.AddArgument("--log-level=3");
+            option.AddArgument("headless");
+            ChromeDriverService service = ChromeDriverService.CreateDefaultService();
+            service.SuppressInitialDiagnosticInformation = true;
+            try
+            {
+                driver = new ChromeDriver(service, option);
+            }
+            catch (System.Exception ex)
+            {
+                Console.Clear();
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($@"Chrome Webdriver exception - {ex.Message}");
+                Console.ForegroundColor = ConsoleColor.Yellow;            
+                Environment.Exit(-1);
+            }
+
             driver.Manage().Window.Maximize();
         }
 
@@ -40,9 +50,9 @@ namespace ChomikujToExcel
             Task.Delay(2000).Wait();
             home.RodoPopUpClose();
             Task.Delay(2000).Wait();
-            home.LoginOnPage(Json_Data.PersonalData("login"), Json_Data.PersonalData("password"));
+            home.LoginOnPage(Json_Data.WriteData("login"), Json_Data.WriteData("password"));
             Task.Delay(2000).Wait();
-            home.EnterUserPassword(Json_Data.PersonalData("userPassword"));
+            home.EnterUserPassword(Json_Data.WriteData("userPassword"));
             Task.Delay(2000).Wait();
             home.BookList();
             driver.Quit();

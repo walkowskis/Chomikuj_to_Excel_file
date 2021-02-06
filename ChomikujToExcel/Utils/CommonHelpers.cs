@@ -12,18 +12,30 @@ namespace ChomikujToExcel.Utils
     public static class CommonHelpers
     {
         public static bool ExcelVisible = true;
-        private static string folder = Json_Data.PersonalData("url").Split(new char[] { '/' })[Json_Data.PersonalData("url").Split(new char[] { '/' }).Length - 1];
-
+        public static string config_path = Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar.ToString() + "config.json";
+        private static string folder = Json_Data.WriteData("url").Split(new char[] { '/' })[Json_Data.WriteData("url").Split(new char[] { '/' }).Length - 1];
+        
         public static string Folder { get => folder; set => folder = value; }
     }
 
     public static class Json_Data
     {
-        public static string PersonalData(string data)
+        public static string WriteData(string data)
         {
-            string config_path = Directory.GetCurrentDirectory() + Path.DirectorySeparatorChar.ToString() + "config.json";
-            JObject jsonObject = JObject.Parse(File.ReadAllText(config_path));
+            JObject jsonObject = JObject.Parse(File.ReadAllText(CommonHelpers.config_path));
             return jsonObject[data].ToString();
+        }
+        public static string WriteAllData()
+        {
+            JObject jsonObject = JObject.Parse(File.ReadAllText(CommonHelpers.config_path));
+            return jsonObject.ToString();
+        }
+
+        public static void ModifyData(string key, string value)
+        {
+            JObject jsonObject = JObject.Parse(File.ReadAllText(CommonHelpers.config_path));
+            jsonObject[key] = value;
+            File.WriteAllText(CommonHelpers.config_path, jsonObject.ToString());
         }
     }
 

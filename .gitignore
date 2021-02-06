@@ -344,4 +344,5 @@ healthchecksdb
 # Own
 *.config
 *.csproj
-Properties/
+[Pp]roperties/
+ChomikujCrowlerGit.sln
