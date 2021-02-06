@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ChomikujToExcel.PageObjects;
+using ChomikujToExcel.Utils;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using ChomikujToExcel.PageObjects;
-using ChomikujToExcel.Utils;
-using SeleniumExtras.PageObjects;
-using OpenQA.Selenium.Support.UI;
-
+using System;
+using System.Threading.Tasks;
 
 namespace ChomikujToExcel
 {
@@ -27,12 +21,25 @@ namespace ChomikujToExcel
 
         public void SetUp()
         {
-            ChromeOptions option = new ChromeOptions();            
+            ChromeOptions option = new ChromeOptions();
             option.AddArgument("--silent");
             option.AddArgument("--log-level=3");
+            option.AddArgument("headless");
             ChromeDriverService service = ChromeDriverService.CreateDefaultService();
             service.SuppressInitialDiagnosticInformation = true;
-            driver = new ChromeDriver(service, option);
+            try
+            {
+                driver = new ChromeDriver(service, option);
+            }
+            catch (System.Exception ex)
+            {
+                Console.Clear();
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($@"Chrome Webdriver exception - {ex.Message}");
+                Console.ForegroundColor = ConsoleColor.Yellow;            
+                Environment.Exit(-1);
+            }
+
             driver.Manage().Window.Maximize();
         }
 

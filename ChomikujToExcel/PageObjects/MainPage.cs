@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ChomikujToExcel.Utils;
 using OpenQA.Selenium;
-using SeleniumExtras.PageObjects;
-using ChomikujToExcel.Utils;
 using OpenQA.Selenium.Support.UI;
+using SeleniumExtras.PageObjects;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ChomikujToExcel.PageObjects
 {
@@ -28,7 +26,7 @@ namespace ChomikujToExcel.PageObjects
         private IWebElement PasswordUserField;
         [FindsBy(How = How.CssSelector, Using = ".greenButtonCSS")]
         private IWebElement RodoButton;
-        [FindsBy(How = How.CssSelector, Using = "[title^='następna strona »']")]
+        [FindsBy(How = How.XPath, Using = "//a[@title='następna strona »']")]
         private IWebElement NextPageLink;
         [FindsBy(How = How.XPath, Using = ".//div[contains(@class,'filename txt')]/h3/a")]
         public IList<IWebElement> Lists { get; set; }
@@ -44,6 +42,7 @@ namespace ChomikujToExcel.PageObjects
                 var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(5));
                 wait.Until(d => RodoButton.Displayed);
                 string title = (string)js.ExecuteScript("arguments[0].click();", RodoButton);
+                Console.WriteLine("PopUp RODO closed.");
             }
             catch (Exception e)
             {
@@ -57,6 +56,7 @@ namespace ChomikujToExcel.PageObjects
             PasswordField.SendKeys(password);
             Task.Delay(500).Wait();
             PasswordField.SendKeys(Keys.Enter);
+            Console.WriteLine("Login.");
         }
 
         public void EnterUserPassword(string password)
@@ -66,11 +66,14 @@ namespace ChomikujToExcel.PageObjects
             PasswordUserField.SendKeys(password);
             Task.Delay(2000).Wait();
             PasswordUserField.SendKeys(Keys.Enter);
+            Console.WriteLine("User account login.");
+            Console.Clear();
         }
 
         public void goToPage()
         {
             driver.Navigate().GoToUrl(Json_Data.WriteData("url"));
+            Console.WriteLine($@"Open {Json_Data.WriteData("url")} website.");
         }
 
         public List<string> BookList()
@@ -84,6 +87,7 @@ namespace ChomikujToExcel.PageObjects
                         string content = List.Text;
                         bookList.Add(content);
                         bookLinkList.Add(List.GetAttribute("href"));
+                        Console.WriteLine($@"Adding {content} item.");
                     }
                     catch (Exception e)
                     {
@@ -102,7 +106,15 @@ namespace ChomikujToExcel.PageObjects
         {
             try
             {
-                NextPageLink.Click();
+                if(NextPageLink.Displayed)
+                {
+                    NextPageLink.Click();
+                    Console.WriteLine("Go to the next page.");
+                }
+                else
+                {
+                    Console.WriteLine("End of pages.");
+                }
             }
             catch (Exception e)
             {
